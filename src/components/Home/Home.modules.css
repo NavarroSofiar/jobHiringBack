@@ -1,0 +1,7 @@
+.home-order{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    min-height: 50px;
+    
+}
