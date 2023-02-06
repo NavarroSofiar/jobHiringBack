@@ -1,26 +1,13 @@
-import { useState } from "react"
-import { useDispatch } from 'react-redux';
-import { useNavigate } from "react-router-dom"
-import { postJob } from "../../redux/actions/postJob";
+import { useEffect, useState } from "react"
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate, useParams } from "react-router-dom"
+import { updateJob } from "../../redux/actions/updateJob";
+import { getById } from '../../redux/actions/getById'
 import swal from 'sweetalert';
-import './CreateJobForm.modules.css'
-
-function control(input) {
-    let error = {}
-    if (!input.name) error.name = 'Enter a name'
-    if (!input.job_title) error.job_title = 'Enter a title'
-    if (!input.experience) error.experience = 'Please complete the necessary experience'
-    if (!input.location) error.location = 'Enter a location'
-    if (!input.about_us) error.about_us = 'Please complete the about us field'
-    if (!input.job_responsabilities) error.job_responsabilities = 'Please complete the responsibilities field'
-    if (!input.job_description) error.job_description = 'The description is necessary'
-    return error
-}
 
 
-const CreateJobForm = () => {
+const EditJobForm = () => {
 
-    const [errors, setErrors] = useState({})
     const [input, setInput] = useState({
         name: '',
         job_title: '',
@@ -29,22 +16,44 @@ const CreateJobForm = () => {
         about_us: '',
         job_responsabilities: '',
         job_description: '',
-        expiration_date: ''
     })
     const dispatch = useDispatch()
     const navigate = useNavigate()
+    const params = useParams();
+    const jobs = useSelector((state) => state.state.detail);
+    // console.log(jobs._id)
 
 
+    const jobId = useParams()
+    // console.log(jobId)
+
+
+    useEffect(() => {
+        dispatch((getById(jobId)));
+    }, [dispatch, jobId])
+
+    useEffect(() => {
+        if (jobs) {
+            setInput({
+                _id: jobs._id,
+                name: jobs.name || '',
+                job_title: jobs.job_title || '',
+                experience: jobs.experience || '',
+                location: jobs.location || '',
+                about_us: jobs.about_us || '',
+                job_responsabilities: jobs.job_responsabilities || '',
+                job_description: jobs.job_description || '',
+                expiration_date: jobs.expiration_date || '',
+            });
+        }
+    }, [jobs])
 
     const handleChange = e => {
         setInput({
             ...input,
             [e.target.name]: e.target.value,
         })
-        setErrors(control({
-            ...input,
-            [e.target.name]: e.target.value
-        }))
+
 
     }
 
@@ -57,9 +66,9 @@ const CreateJobForm = () => {
             input.experience &&
             input.about_us &&
             input.location && input.expiration_date) {
-            dispatch(postJob(input))
+            dispatch(updateJob(input))
             swal({
-                title: 'Job added successfully!',
+                title: 'Job updated successfully!',
                 icon: "success",
                 button: "Ok"
             })
@@ -86,7 +95,7 @@ const CreateJobForm = () => {
 
     return (
         <form onSubmit={handleSubmit} className='form-order'>
-            <h1>Creation Form</h1>
+            <h1>Edition Form</h1>
             <input
                 name="name"
                 type="text"
@@ -137,7 +146,6 @@ const CreateJobForm = () => {
                 onChange={handleChange}
                 value={input.job_description}
             />
-
             <input
                 name="expiration_date"
                 type="date"
@@ -151,4 +159,4 @@ const CreateJobForm = () => {
 }
 
 
-export default CreateJobForm
+export default EditJobForm

@@ -9,7 +9,7 @@ const Detail = () => {
     const dispatch= useDispatch()
     const navigate = useNavigate()
     const detailjob = useSelector((state =>state.state.detail))
-    console.log(detailjob.name)
+    console.log(detailjob)
    
     const jobId= useParams()
     
@@ -31,6 +31,7 @@ const Detail = () => {
     <div className= "container-detail">
      { detailjob && typeof detailjob === 'object' ?
      <div>
+      <h7></h7>
       <h1>Name: {detailjob.name} </h1>
       <h2>Job Title: {detailjob.job_title}</h2>
       <h3>Experience: {detailjob.experience} </h3>
@@ -39,12 +40,13 @@ const Detail = () => {
       <p>Responsabilities:{detailjob.job_responsabilities}</p>
       <p>Description:{detailjob.job_description}</p>
       <p>Created:{detailjob.createdAt}</p>
+      <p>Expiration_date:{detailjob.expiration_date}</p>
 
      </div>
      :
      <div>Loading</div>
      }
-     <button onClick={handleOnclick}>Apply</button>
+     <button className='btnReload' onClick={handleOnclick}>Apply</button>
     </div>
     
   )

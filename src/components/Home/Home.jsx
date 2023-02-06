@@ -17,7 +17,7 @@ const Home = () => {
 
   return (
     <div className="home-order">
-      <NavBar/>
+    
       {
 
         jobs ? jobs.length
