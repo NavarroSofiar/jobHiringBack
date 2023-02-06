@@ -32,14 +32,7 @@ function App() {
      } 
   }, [authenticated]);
   
-  const handleLogin = () => {
-    keycloak.login();
-  };
-
-  const handleLogout = () => {
-    keycloak.logout();
-  };
-
+  
 
 
   return (
